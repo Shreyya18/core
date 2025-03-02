@@ -1,0 +1,76 @@
+Given an array nums of size n, return the majority element.
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+Example 1:
+Input: nums = [3,2,3]
+Output: 3
+
+Example 2:
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//brute
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+    int number, n=nums.size(), i=0,maxCount=0;
+        while(i<n){
+            int count=1;
+            int j=i+1;
+            while(j<n){
+                if(nums[i]==nums[j])
+                    count++;
+                j++;
+            }
+            if(count>n/2){
+                maxCount=max(maxCount,count);
+                number=nums[i];
+            }
+            i++;
+        }
+        return number;
+}
+};
+-------------------------------------------------------------------------------------------------------------------------
+//better
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+     int ele, count=0, n=nums.size();
+        for(int i=0;i<n;i++){
+                if(count==0){
+                    count++;
+                    ele=nums[i];
+                }
+                else if(nums[i]==ele)
+                    count++;
+                else
+                    count--;
+        }
+
+        for(int i=0;i<n;i++){
+            if(nums[i]==ele)
+                count++;
+        }
+        if(count>n/2)
+            return ele;
+        return -1;
+  }
+};
+--------------------------------------------------------------------------------------------------------
+//optimal
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+     int n=nums.size();
+        map<int,int>mpp;
+        for(int i=0;i<n;i++){
+            mpp[nums[i]]++;
+        }
+        for(auto it:mpp){
+            if(it.second>n/2)
+                return it.first;
+        }
+        return -1;
+    } 
+};
