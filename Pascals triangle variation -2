@@ -1,0 +1,37 @@
+Variation 2: Given the row number n. Print the n-th row of Pascal’s triangle.
+
+Example:
+Input Format:
+ N = 5
+1 
+1 1 
+1 2 1 
+1 3 3 1 
+1 4 6 4 1 
+
+Output
+1 4 6 4 1 (for variation 2)
+------------------------------------------------------------------------------------------------------------------------------------------------
+// Online C++ compiler to run C++ program online
+#include <iostream>
+using namespace std;
+void  nCr(int n){
+    int res=1;
+    cout<<res<<" ";
+    for (int i=1;i<n;i++){
+        res=res*(n-i);
+        res=res/i;
+        cout<<res<<" ";
+    }
+    }
+
+int main() {
+    // Write C++ code here
+    int n;
+
+    cout<<"enter no of rows";
+    cin>>n;
+    nCr(n);
+    
+    return 0;
+}
