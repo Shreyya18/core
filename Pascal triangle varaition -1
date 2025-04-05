@@ -1,0 +1,34 @@
+Variation 1: Given row number r and column number c. Print the element at position (r, c) in Pascal’s triangle.
+
+Example 1:
+Input Format:
+ N = 5, r = 5, c = 3
+Result:
+ 6 (for variation 1)
+
+1 
+1 1 
+1 2 1 
+1 3 3 1 
+1 4 6 4 1 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+int  nCr(int n,int r){
+    int res=1;
+    for (int i=0;i<r;i++){
+        res=res*(n-i);
+        res=res/(i+1);
+    }
+    return res;
+}
+int main() {
+    // Write C++ code here
+    int c,r;
+    // std::cout << "Try programiz.pro";
+    cout<<"enter no of rows and column";
+    cin>>r>>c;
+    int result=nCr(r-1,c-1);
+    cout<<"res"<<result;
+    return 0;
+}
