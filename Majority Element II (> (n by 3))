@@ -1,0 +1,96 @@
+Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+Example 1:
+Input: nums = [3,2,3]
+Output: [3]
+
+Example 2:
+Input: nums = [1]
+Output: [1]
+
+Example 3:
+Input: nums = [1,2]
+Output: [1,2]
+------------------------------------------------------------------------------------------------------------------------------------------------
+//brute
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int n=nums.size();
+        int nby3=n/3;
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            int count=1;
+            if(ans.size()==0 || ans[0]!=nums[i]){
+            for(int j=i+1;j<n;j++){
+                if(nums[i]==nums[j])
+                    count++;
+            }
+            if(count>nby3){
+                ans.push_back(nums[i]);
+            }
+            }
+             if(ans.size()==2) break;
+        }
+        return ans;
+  }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+//better
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+      int n=nums.size();
+        vector<int>ans;
+        map<int,int>hash;
+        for(int i=0;i<n;i++){
+            hash[nums[i]]++;
+        }
+
+        for(auto it:hash){
+            if(it.second>(n/3))
+                ans.push_back(it.first);
+        }
+        return ans;
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+//optimal
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+      int n=nums.size();
+        int count1=0,count2=0;
+        int ele1=INT_MIN, ele2=INT_MIN;
+        for(int i=0;i<n;i++){
+            if(count1==0 && ele2!=nums[i]){
+                count1=1;
+                ele1=nums[i];
+            }
+            else if(count2==0 && ele1!=nums[i]){
+                count2=1;
+                ele2=nums[i];
+            }
+            else if(nums[i]==ele1)  count1++;
+            else if (nums[i]==ele2) count2++;
+
+            else{
+                count1--;
+                count2--;
+            }
+        }
+
+        //check if it is the majority element
+        int c1=0,c2=0;
+        for(int i=0;i<n;i++){
+            if(ele1==nums[i]) c1++;
+            if(ele2==nums[i]) c2++;
+
+        }
+        vector<int>ls;
+        if(c1>(n/3)) ls.push_back(ele1);
+        if(c2>(n/3)) ls.push_back(ele2);
+        
+        return ls;
+    }
+};
