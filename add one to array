@@ -1,0 +1,46 @@
+Problem Statement:
+You are given a non-negative integer represented as an array of digits, where each element in the array represents a single digit of the number. 
+The most significant digit is at index `0`, and the least significant digit is at the last index.
+Your task is to add one to the integer and return the updated number as an array, ensuring that:
+1. Leading zeros are removed before processing.
+2. The carry is correctly propagated, updating digits from right to left.
+3. If a carry remains after processing all digits, a new most significant digit (`1`) is inserted at the front.
+4. Edge cases such as `{0}`, `{9,9,9}`, `{0,2}`, and `{2}` are handled correctly.
+
+Example 1:
+Input:{0,2}
+Output:{3}
+
+Example 2:
+Input:{9,9,9}
+Output:{1,0,0,0}
+
+Example 3:
+Input:{2}
+Output:{3}
+---------------------------------------------------------------------------------------------------------------------------
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> addOneToNumber(vector<int> arr) {
+    // Remove leading zeros
+    while (!arr.empty() && arr[0] == 0) {
+        arr.erase(arr.begin());
+    }
+
+    int n = arr.size();  // Update n after removing zeros
+    int carry = 1;
+
+    for (int i = n - 1; i >= 0 && carry > 0; i--) {
+        arr[i] += carry;
+        carry = arr[i] / 10;
+        arr[i] %= 10;
+    }
+
+    // If there's still a carry left, insert 1 at the front
+    if (carry > 0) {
+        arr.insert(arr.begin(), 1);
+    }
+
+    return arr;
+}
