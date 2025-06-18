@@ -1,0 +1,53 @@
+You are given 2 numbers n and m, the task is to find n√m (nth root of m). If the root is not integer then returns -1.
+
+Example 1 :
+
+Input: n = 2, m = 9
+Output: 3
+Explanation: 32 = 9
+
+Example 2:
+Input: n = 3, m = 9
+Output: -1
+Explanation: 3rd root of 9 is not integer.
+
+Example 3:
+Input: n = 1, m = 14
+Output: 14
+-------------------------------------------------------------------------------------------------------------------------------------------
+//brute
+class Solution {
+  public:
+    int nthRoot(int n, int m) {
+        // Code here.
+        for(int i=1;i<=m;i++){
+            int ans=1;
+            for(int j=1;j<=n;j++){
+                ans=ans*i;
+            }
+            if(ans==m)
+                return i;
+        }
+        return -1;
+-----------------------------------------------------------------------------------------
+//optimal using binary search
+class Solution {
+  public:
+    int nthRoot(int n, int m) {
+       int low=0,high=m;
+        while(low<=high){
+            int mid=(low+high)/2;
+            int ans=1;
+            for(int i=1;i<=n;i++){
+                ans=ans*mid;
+            }
+            if(ans==m)
+                return mid;
+            else if(ans<m)
+                low=mid+1;
+            else
+                high=mid-1;
+        }
+        return -1;
+    }
+};
