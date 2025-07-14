@@ -61,6 +61,20 @@ int minDays(vector<int>& bloomDay, int m, int k) {
 //optimal using binary search
 class Solution {
 public:
+       int minNo(vector<int>& bloomDay,int mid,int n,int m,int k){
+        int count=0,bouquet=0;
+        for(int i=0;i<n;i++){
+            if(bloomDay[i]<=mid)
+                count++;
+            else{
+                bouquet+=(count/k);
+                count=0;
+            }
+        }
+        bouquet+=(count/k);
+        return bouquet;
+    }
+
       int minDays(vector<int>& bloomDay, int m, int k) {
         int n=bloomDay.size();
         int mini=INT_MAX;
