@@ -1,0 +1,77 @@
+You are given a 2D binary array arr[][] consisting of only 1s and 0s. Each row of the array is sorted in non-decreasing order. 
+Your task is to find and return the index of the first row that contains the maximum number of 1s. If no such row exists, return -1.
+Note:
+The array follows 0-based indexing.
+The number of rows and columns in the array are denoted by n and m respectively.
+
+Example 1:
+Input: arr[][] = [[0,1,1,1], [0,0,1,1], [1,1,1,1], [0,0,0,0]]
+Output: 2
+Explanation: Row 2 contains the most number of 1s (4 1s). Hence, the output is 2.
+
+Example 2:
+Input: arr[][] = [[0,0], [1,1]]
+Output: 1
+Explanation: Row 1 contains the most number of 1s (2 1s). Hence, the output is 1.
+
+Example 3:
+Input: arr[][] = [[0,0], [0,0]]
+Output: -1
+Explanation: No row contains any 1s, so the output is -1.
+-------------------------------------------------------------------------------------------------------------------------------------------
+//brute
+class Solution {
+  public:
+    int rowWithMax1s(vector<vector<int>> &arr) {
+        code here
+        int rows=arr.size(), col=arr[0].size();
+        int count=0,maxCount=INT_MIN,ans=-1;
+        for(int i=0;i<rows;i++){
+            count=0;
+            for(int j=0;j<col;j++){
+                // if(arr[i][j]==1)
+                //     count++;
+                //instead of above 2 lines just count all the element in the arry only if array elements are just 0 & 1
+                count+=arr[i][j];
+            }
+            if(count>maxCount){
+                maxCount=count;
+                 ans=i;
+            }
+        }
+        return ans;
+    }
+};
+-----------------------------------------------------------------------------------------------------------------
+//optimal 
+class Solution {
+  public:
+    int rowWithMax1s(vector<vector<int>> &arr) {
+        int rows=arr.size(), col=arr[0].size();
+        int  maxCount=INT_MIN,idx=-1;
+        for(int i=0;i<rows;i++){
+            //in binary search count of a number is size of array (i.e rows here) - index of first occurence of that number (ans returned by the function)
+            int count= rows-findCountOfEachRow(arr[i],col,1);
+            if(count>maxCount){
+                maxCount=count;
+                idx=i;
+            }
+        }
+        return idx;
+    }
+    int findCountOfEachRow(vector<int>& arr, int n, int x){
+            int low=0, high=n-1,firstOne=n;
+            //lower bound
+            while(low<=high){
+                int mid=(low+high)/2;
+                if(arr[mid]>=x){
+                    firstOne=mid;
+                    high=mid-1;
+                }
+                else
+                    low=mid+1;
+            }
+            return firstOne;
+            
+        }
+};
