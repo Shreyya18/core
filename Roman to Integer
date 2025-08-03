@@ -34,6 +34,7 @@ Input: s = "MCMXCIV"
 Output: 1994
 Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 -----------------------------------------------------------------------------------------------------------------------------------------------
+// tc=o(n), sc=O(1)
 class Solution {
 public:
     int romanToInt(string s) {
@@ -88,5 +89,32 @@ public:
                 
         }
         return res;
+    }
+};
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+//simpler approach using hash map with tc= O(n) ,  sc=O(1) because the hash map will not grow , it is used just to store small no. of element memort used is constant
+class Solution {
+public:
+    int romanToInt(string s) {
+          map<char,int> mp;
+        mp['I']=1;
+        mp['V']=5;
+        mp['X']=10;
+        mp['L']=50;
+        mp['C']=100;
+        mp['D']=500;
+        mp['M']=1000;
+
+        int val=0;
+        for(int i=0;i<s.size();i++){
+            if(mp[s[i]]<mp[s[i+1]]){
+                val+=(mp[s[i+1]]-mp[s[i]]);
+                i++;
+            }
+            else
+                val+=mp[s[i]];
+        }
+        return val;
+
     }
 };
