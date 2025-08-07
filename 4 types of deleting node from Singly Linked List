@@ -1,0 +1,90 @@
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+//structure of LinkedList
+    struct Node{
+        int data;
+        Node* next;
+        
+        Node(int data1, Node* next1){
+            data=data1;
+            next=next1;
+        }
+    };
+    //Convert an array to a LinkedList
+    Node* convertArraytoLL(vector<int>& arr){
+        Node* head=new Node(arr[0],NULL);
+        Node* mover=head;
+        for(int i=1;i<arr.size();i++){
+            Node* temp=new Node(arr[i], NULL);
+            mover->next=temp;
+            mover=mover->next;
+        }
+        return head;
+    }
+    //Print the LinkedList
+    void printALL(Node* head){
+        Node* temp=head;
+        while(temp!=NULL){
+            cout<<" "<<temp->data;
+            temp=temp->next;
+        }
+    }
+    //delete the front element of Linkedlist
+   Node* deleteFront(Node* head){
+       Node* temp=head;
+       head=head->next;
+       temp->next=NULL;
+       free(temp);
+    return head;
+   }
+    //delete last element of LinkedList
+    Node* deleteEnd(Node* head){
+        Node* temp=head;
+        Node* prev=NULL;
+        while(temp->next!=NULL){
+            prev=temp;
+            temp=temp->next;
+        }
+        prev->next=NULL;
+        free(temp);
+        return head;
+    }
+    //delete the element at the given position in the LL
+    Node* deleteAtPosition(Node* head, int pos){
+        Node* temp=head;
+        Node* prev=NULL;
+        int count=0;
+        while(temp!=NULL){
+            count++;
+            if(count==pos){
+                prev->next=temp->next;
+            }
+            prev=temp;
+            temp=temp->next;
+        }
+        return head;
+    }
+    //delete the given value from the LinkedList
+    Node* deleteValue(Node* head, int val){
+        Node* temp=head;
+        Node* prev=NULL;
+        while(temp!=NULL){
+            if(temp->data==val){
+                prev->next=temp->next;
+            }
+            prev=temp;
+            temp=temp->next;
+        }
+        return head;
+    }
+int main() {
+    vector<int> arr={1,1,2,3,4,5,3};
+    Node* head=convertArraytoLL(arr);
+    head=deleteFront(head);
+    head=deleteEnd(head);
+    head=deleteAtPosition(head, 3);
+    head=deleteValue(head, 2);
+    printALL(head);
+    return 0;
+}
