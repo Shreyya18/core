@@ -1,0 +1,87 @@
+Given a doubly linked list. Your task is to reverse the doubly linked list and return its head.
+
+Example 1:
+Input: LinkedList: 3 <-> 4 <-> 5
+Output: 5 <-> 4 <-> 3
+
+Example 2:
+Input: LinkedList: 75 <-> 122 <-> 59 <-> 196
+Output: 196 <-> 59 <-> 122 <-> 75
+------------------------------------------------------------------------------------------------------------------------
+//brute using stack tc=O(2n) sc=O(n)
+/*
+class DLLNode {
+  public:
+    int data;
+    DLLNode *next;
+    DLLNode *prev;
+
+    DLLNode(int val) {
+        data = val;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    // Function to reverse a doubly linked list
+    DLLNode* reverseDLL(DLLNode* head) {
+        Your code here
+        stack<int>st;
+        DLLNode* temp=head;
+        while(temp!=NULL){
+            st.push(temp->data);
+            temp=temp->next;
+        }
+        temp=head;
+        while(temp!=NULL){
+            temp->data=st.top();
+            st.pop();
+            temp=temp->next;
+        }
+    }
+};
+------------------------------------------------------------------------------------------------------
+//better
+class Solution {
+  public:
+    // Function to reverse a doubly linked list
+    DLLNode* reverseDLL(DLLNode* head) {
+                DLLNode* temp=head;
+        DLLNode* last=NULL;
+        while(temp!=NULL){
+            DLLNode* front=temp->next;
+            temp->next=last;
+            temp->prev=front;
+            last=temp;
+            temp=front;
+        }
+        return last;
+    }
+};
+------------------------------------------------------------------------------------------------------------
+//optimal
+class Solution {
+  public:
+    // Function to reverse a doubly linked list
+    DLLNode* reverseDLL(DLLNode* head) {
+        if(head==NULL || head->next==NULL)
+            return head;
+        DLLNode* mover=head;
+        DLLNode* last=NULL;
+        while(mover!=NULL){
+            last=mover->prev;
+            mover->prev=mover->next;
+            mover->next=last;
+            mover=mover->prev;
+        }
+          if (last != NULL) {
+        head = last->prev;
+          }
+          return head;
+    }
+};
+
+
+        return head;
