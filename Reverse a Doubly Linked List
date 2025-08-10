@@ -40,6 +40,7 @@ class Solution {
             st.pop();
             temp=temp->next;
         }
+    return head;
     }
 };
 ------------------------------------------------------------------------------------------------------
@@ -83,5 +84,24 @@ class Solution {
     }
 };
 
-
+-------------------------------------------
+or
+-----------------------------------------------
+class Solution {
+  public:
+    // Function to reverse a doubly linked list
+    DLLNode* reverseDLL(DLLNode* head) {
+    if(head==NULL || head->next==NULL)
         return head;
+    DLLNode* temp=head;
+    DLLNode* back=NULL;
+    while(temp!=NULL){
+        temp->prev=temp->next;
+        temp->next=back;
+        back=temp;
+        temp=temp->prev;
+    }
+    return back;
+    }
+};
+    
