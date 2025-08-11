@@ -1,0 +1,79 @@
+Given the head of a linked list, determine whether the list contains a loop. If a loop is present, return the number of nodes in the loop, otherwise return 0.
+Note: 'c' is the position of the node which is the next pointer of the last node of the linkedlist. If c is 0, then there is no loop.
+
+Example 1:
+Input: head: 1 → 2 → 3 → 4 → 5, c = 2
+Output: 4
+Explanation: There exists a loop in the linked list and the length of the loop is 4.
+
+Example 2:
+Input: head: 25 → 14 → 19 → 33 → 10 → 21 → 39 → 90 → 58 → 45, c = 4
+Output: 7
+Explanation: The loop is from 33 to 45. So length of loop is 33 → 10 → 21 → 39 → 90 → 58 → 45 = 7.
+
+Example 3:
+Input: head: 0 → 1 → 2 → 3, c = 0
+Output: 0
+Explanation: There is no loop.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+//brute tc=O(n) sc=O(n)
+/*
+class Node {
+ public:
+    int data;
+    Node *next;
+
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+class Solution {
+  public:
+    int lengthOfLoop(Node *head) {
+        // Code here
+        map<Node*, int>mpp;
+        Node* mover=head;
+        while(mover!=NULL && mover->next!=NULL){
+            if(mpp.find(mover)!=mpp.end()){
+                Node* temp=mover->next;
+                int count=1;
+                while(temp!=mover){
+                    count++;
+                    temp=temp->next;
+                }
+                
+                return count;
+            }
+            mpp[mover]++;
+            mover=mover->next;
+        }
+        return 0;
+  }
+};
+------------------------------------------------------------------------------------------------
+//optimal  tc=O(n) sc=O(n)
+class Solution {
+  public:
+    int lengthOfLoop(Node *head) {
+          Node* fast=head;
+        Node* slow=head;
+        while(fast!=NULL && fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
+            if(slow==fast){
+                fast=fast->next;
+                int count=1;
+                while(fast!=slow){
+                    count++;
+                    fast=fast->next;
+                    
+                }
+                return count;
+            }
+        }
+        return 0;
+    }
+};
