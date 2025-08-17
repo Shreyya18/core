@@ -1,0 +1,114 @@
+Given the head of a linked list, return the list after sorting it in ascending order.
+
+Example 1:
+Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+
+Example 2:
+Input: head = [-1,5,3,4,0]
+Output: [-1,0,3,4,5]
+
+Example 3:
+Input: head = []
+Output: []
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+//brute  tc=O(nlogn) sc=O(n)
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        multiset<int>mst;
+        ListNode* mover=head;
+        while(mover!=NULL){
+            mst.insert(mover->val);
+            mover=mover->next;
+        }
+        mover=head;
+        for(auto it:mst){
+            mover->val=it;
+            mover=mover->next;
+        }
+        return head;
+    }
+};
+--------------------------------------------------------------------------------------------
+//brute-2  tc=O(nlogn) sc=O(n)
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+          vector<int>arr;
+        ListNode* mover=head;
+        while(mover!=NULL){
+            arr.push_back(mover->val);
+            mover=mover->next;
+        }
+        sort(arr.begin(), arr.end());
+        mover=head;
+        for(int i=0;i<arr.size();i++){
+            mover->val=arr[i];
+        mover=mover->next;
+        }
+
+        return head;
+    }
+};
+
+----------------------------------------------------------------------------------------------------------
+//optimal tc=O(logn*(n+n/2)) sc=O(1)
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+         if(head==NULL || head->next==NULL)
+            return head;
+        ListNode* middle=middleLL(head);
+        ListNode* left=head;
+        ListNode* right=middle->next;
+        middle->next=NULL;
+        
+        left=sortList(left);
+        right=sortList(right);
+
+        return mergeSort(left, right);
+        
+
+    }
+    ListNode* middleLL(ListNode* head){
+        ListNode* fast=head->next;
+        ListNode* slow=head;
+        while(fast!=NULL && fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
+        }
+        return slow;
+    }
+
+    ListNode* mergeSort(ListNode* left, ListNode* right){
+        ListNode* dummyNode=new ListNode(-1);
+        ListNode* mover=dummyNode;
+        while(left!=NULL && right!=NULL){
+            if(left->val< right->val){
+                mover->next=left;
+                mover=left;
+                left=left->next;
+            }
+            else{
+                mover->next=right;
+                mover=right;
+                right=right->next;
+            }
+        }
+        if(left) mover->next=left;
+        else
+            mover->next=right;
+        return dummyNode->next;
+    }
+};
