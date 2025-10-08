@@ -1,0 +1,68 @@
+Given a string s, find the length of the longest substring without duplicate characters.
+
+Example 1:
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3. Note that "bca" and "cab" are also correct answers.
+
+Example 2:
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+
+Example 3:
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+------------------------------------------------------------------------------------------------------------------------------
+//brute   tc=O(n^2) sc=O(n)
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+     int n=s.size();
+     int maxLen=INT_MIN;
+     if(n<=1)
+        return n;
+    
+     for(int i=0;i<n;i++){
+        unordered_set<int>st;
+        for(int j=i;j<n;j++){
+            if(st.find(s[j])!=st.end()){
+                maxLen=max(maxLen, j-i);
+                break;
+            }
+            st.insert(s[j]);
+            if(j==n-1){
+                maxLen=max(maxLen, j-i+1);
+            }
+        }
+     }
+     return maxLen;
+  }
+};
+-------------------------------------------------------------------------------
+//optimal - 1   tc=O(2n) sc=O(n)
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        
+    int n=s.size();
+    int l=0, r=0;
+    int maxLen=INT_MIN;
+    if(n<=1)
+        return n;
+    unordered_set<int>set;
+    for(r=0;r<n;r++){
+        if(set.find(s[r])!=set.end()){
+            while(l<r && set.find(s[r])!=set.end()){
+                set.erase(s[l]);
+                l++;
+            }
+        }
+        set.insert(s[r]);
+        maxLen=max(maxLen, r-l+1);
+    }
+    return maxLen;
+    }
+};
