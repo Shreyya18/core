@@ -16,7 +16,7 @@ Example 4:
 Input: root = [1]
 Output: [1]
 ---------------------------------------------------------------------------------------------------------------------
-//without using another function (this works but try to use another  function.) tc=O(n) sc=O(n)
+//without using another function (this works but try to use another  function.) tc=O(n) sc=O(n)   (recursive)
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -43,7 +43,7 @@ public:
 
 };
 -------------------------------------------------------------------------------------------
-//using another function tc=O(n) sc=O(n)
+//using another function tc=O(n) sc=O(n)   (recursive)
 class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
@@ -62,3 +62,28 @@ public:
     }
 
 };
+----------------------------------------------------------------------------------------------
+//iterative approach tc=O(n) sc=O(n)
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        stack<TreeNode*>st;
+        vector<int>res;
+        if(root==NULL)
+            return res;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* node=st.top();
+            st.pop();
+            res.push_back(node->val);
+            if(node->right!=NULL)
+                st.push(node->right);
+            if(node->left!=NULL)
+                st.push(node->left);
+
+        }
+        return res;
+    }
+};
+
+        
