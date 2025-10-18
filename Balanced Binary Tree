@@ -1,0 +1,61 @@
+Given a binary tree, determine if it is height-balanced.
+
+Example 1:
+Input: root = [3,9,20,null,null,15,7]
+Output: true
+
+Example 2:
+Input: root = [1,2,2,3,3,null,null,4,4]
+Output: false
+
+Example 3:
+Input: root = []
+Output: true
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+//brute tc=O(n^2) sc=O(1)
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if(root==NULL)
+            return true;
+
+            int leftHeight=getHeight(root->left);
+            int rightHeight=getHeight(root->right);
+
+            if(abs(leftHeight-rightHeight)<=1 &&
+                isBalanced(root->left) && isBalanced(root->right)){
+                    return true;
+                }
+    return false;
+    }
+
+    int getHeight(TreeNode* node){
+        if(node==NULL)
+            return 0;
+        int lh=getHeight(node->left);
+        int rh=getHeight(node->right);
+
+        return max(lh,rh)+1;
+    }
+-------------------------------------------------------------------------------------------------------------------------
+//optimal tc=O(n) sc=O(1)
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+            return dfs(root)!=-1;
+    }
+
+    int dfs(TreeNode* node){
+        if(node==NULL)
+            return 0;
+        int lh=dfs(node->left);
+        int rh=dfs(node->right);
+        if(lh==-1 || rh==-1)
+            return -1;
+        if(abs(lh-rh)>1)
+            return -1;
+        return max(lh,rh)+1;
+    }
+};
+
+};
