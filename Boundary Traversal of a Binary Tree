@@ -1,0 +1,100 @@
+Given a root of a Binary Tree, return its boundary traversal in the following order:
+Left Boundary: Nodes from the root to the leftmost leaf (prefer left child over right). Exclude leaf nodes.
+Leaf Nodes: All leaf nodes from left to right, excluding those already in the left or right boundary.
+Reverse Right Boundary: Nodes from the rightmost leaf to the root (prefer right child over left). Exclude the root if already included in the left boundary.
+Note: If the root has no left or right subtree, consider the root itself as part of the respective boundary.
+
+Example 1:
+Input: root = [1, 2, 3, 4, 5, 6, 7, N, N, 8, 9, N, N, N, N]
+Output: [1, 2, 4, 8, 9, 6, 7, 3]
+
+Example 2:
+Input: root = [1, N, 2, N, 3, N, 4, N, N] 
+Output: [1, 4, 3, 2]
+Explanation:
+Left boundary: [1] (as there is no left subtree)
+Leaf nodes: [4]
+Right boundary: [3, 2] (in reverse order)
+Final traversal: [1, 4, 3, 2]
+-------------------------------------------------------------------------------------------------------------------------------------------
+//optimal  tc=O(n)  sc=O(n)
+/*
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+
+    // Constructor to initialize a new node
+    Node(int val) {
+        data = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    vector<int> boundaryTraversal(Node *root) {
+        // code here
+        vector<int>res;
+        if(root==NULL)
+            return res;
+        if(!isLeaf(root))
+            res.push_back(root->data);
+        leftBoundary(root, res);
+        bottomBoundary(root, res);
+        rightBoundary(root, res);
+        return res;
+    }
+    bool isLeaf(Node* root){
+        return root->left==NULL && root->right==NULL;
+    }
+    void leftBoundary(Node* root, vector<int>& res){
+        Node* cur=root->left;
+        while(cur){
+        if(!isLeaf(cur)){
+            res.push_back(cur->data);
+        }
+        
+        if(cur->left){
+            cur=cur->left;
+        }
+        else
+        cur=cur->right;
+        }
+        
+    }
+    
+    void bottomBoundary(Node* root, vector<int>& res){
+        if(isLeaf(root)){
+            res.push_back(root->data);
+        }
+        if(root->left)
+            bottomBoundary(root->left,res);
+        if(root->right)
+            bottomBoundary(root->right,res);
+    }
+    
+    void rightBoundary(Node* root, vector<int>& res){
+        vector<int>temp;
+        Node* cur= root->right;
+        while(cur){
+            if(!isLeaf(cur)){
+                temp.push_back(cur->data);
+            }
+        if(cur->right)
+            cur=cur->right;
+        else
+            cur=cur->left;
+        }
+        
+        for(int i=temp.size()-1;i>=0;i--){
+            res.push_back(temp[i]);
+        }
+        
+    }
+    
+};
+
