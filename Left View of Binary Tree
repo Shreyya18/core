@@ -1,0 +1,76 @@
+Given the root of a binary tree. Your task is to return the left view of the binary tree. The left view of a binary tree is the 
+set of nodes visible when the tree is viewed from the left side.
+Note: If the tree is empty, return an empty list.
+
+Example 1 :
+Input: root = [1, 2, 3, 4, 5, N, N]
+Output:[1, 2, 4]
+Explanation: From the left side of the tree, only the nodes 1, 2, and 4 are visible.
+
+Input: root = [1, 2, 3, N, N, 4, N, N, 5, N, N]
+Output: [1, 2, 4, 5]
+Explanation: From the left side of the tree, only the nodes 1, 2, 4, and 5 are visible.
+---------------------------------------------------------------------------------------------------------------------------------------------
+//level order tc=O(n) sc=O(n)
+/*
+class Node {
+public:
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+*/
+
+class Solution {
+  public:
+    vector<int> leftView(Node *root) {
+        // code here
+        queue<Node*>q;
+        vector<int>res;
+        if(root==NULL)
+            return res;
+        q.push(root);
+        while(!q.empty()){
+            int size=q.size();
+            Node* node;
+            for(int i=0;i<size;i++){
+                node=q.front();
+                q.pop();
+
+                if(node->right)
+                    q.push(node->right);
+                if(node->left)
+                    q.push(node->left);
+            }
+            res.push_back(node->data);
+        }
+        return res;
+    }
+};
+--------------------------------------------------------------------------------------------
+//revursive  tc=O(n) sc=O(h)
+class Solution {
+  public:
+    vector<int> leftView(Node *root) {
+        vector<int>res;
+        leftSide(root, 0, res);
+        return res;
+    }
+    
+    void leftSide(Node* root, int level, vector<int>& res){
+        if(root==NULL)
+            return;
+        if(level==res.size())
+            res.push_back(root->data);
+        leftSide(root->left, level+1, res);
+        leftSide(root->right, level+1,res);
+        
+    }
+};
+
