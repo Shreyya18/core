@@ -1,0 +1,51 @@
+Given the root of a Binary Search Tree. Your task is to find the minimum element in this given BST.
+
+Example 1:
+Input: root = [5, 4, 6, 3, N, N, 7, 1]
+Output: 1
+Explanation: The minimum element in the given BST is 1.
+
+example 2:
+Input: root = [10, 5, 20, 2]
+Output: 2
+Explanation: The minimum element in the given BST is 2.
+--------------------------------------------------------------------------------------------------------------------------------
+// iterative tc=O(logn) sc=O(1)
+/*
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int x) {
+        data = x;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+*/
+
+class Solution {
+  public:
+    int minValue(Node* root) {
+        // code here
+        while(root->left!=NULL)
+        {
+            root=root->left;
+        }
+        return root->data;
+    }
+};
+------------------------------------------------------------------------------
+//recursive tc=O(logn) sc=O(h)
+class Solution {
+  public:
+    int minValue(Node* root) {
+        // base case
+        if (root == NULL) return -1;     // depends on problem constraint
+        if (root->left == NULL) return root->data;
+
+        return minValue(root->left);
+    }
+};
