@@ -48,7 +48,10 @@ public:
          return res;
     }
 
-    void inorder(TreeNode* root, int k, int& count, int & res){
+    void inorder(TreeNode* root, int k, int& count, int & res){ 
+
+    //count should also '&', otherwise for each recursive call count will start with 0
+
         if(root==NULL || count>=k)
             return ;
         inorder(root->left, k,count,res);
