@@ -64,3 +64,26 @@ public:
         inorder(root->right, k, count,res);
     }
 };
+--------------------------------------------------------------
+for kth largest element call 'root->right' first
+void reverseInorder(TreeNode* node, int& counter, int k, int& kLargest) {
+        if (node==NULL || counter >= k) return;
+
+        // Traverse right subtree
+        reverseInorder(node->right, counter, k, kLargest);
+
+        // Increment counter after
+        // visiting right subtree
+        counter++;
+
+        // Check if current node
+        // is the Kth largest
+        if (counter == k) {
+            kLargest = node->val;
+            return;
+        }
+
+        // Traverse left subtree if
+        // Kth largest is not found yet
+        reverseInorder(node->left, counter, k, kLargest);
+    }
