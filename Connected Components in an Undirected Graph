@@ -1,0 +1,88 @@
+Given an undirected graph with V vertices numbered from 0 to V-1 and E edges, represented as a 2D array edges[][],
+where each entry edges[i] = [u, v] denotes an edge between vertices u and v.
+Your task is to return a list of all connected components. Each connected component should be represented as a list 
+of its vertices, with all components returned in a collection where each component is listed separately.
+
+Note: You can return the components in any order, driver code will print the components in sorted order.
+
+Example 1 :
+Input: V = 5, edges[][] = [[0, 1], [2, 1], [3, 4]]
+Output: [[0, 1, 2], [3, 4]]
+
+Example 2:
+Input: V = 7, edges[][] = [[0, 1], [6, 0], [2, 4], [2, 3], [3, 4]]
+Output: [[0, 1, 6], [2, 3, 4], [5]]
+-----------------------------------------------------------------------------------------------------------
+//using dfs traversal tc=o(V+E) sc=O(V+E)
+class Solution {
+  public:
+    vector<vector<int>> getComponents(int V, vector<vector<int>>& edges) {
+        // code here
+        vector<vector<int>>adj(V);
+        for(auto it:edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        vector<vector<int>>res;
+        vector<int>visited(V,0);
+        for(int i=0;i<V;i++){
+            if(!visited[i]){
+                vector<int>temp;
+                dfs(i, visited, adj, temp);
+                res.push_back(temp);
+            }
+        }
+        return res;
+    }
+    
+    void dfs(int val, vector<int>& visited, vector<vector<int>> adj, vector<int>& temp){
+        if(!visited[val]){
+            visited[val]=1;
+            temp.push_back(val);
+        }
+        
+        for(auto it: adj[val]){
+            if(!visited[it])
+                dfs(it, visited, adj,temp);
+        }
+        
+    }
+};
+-------------------------------------------------------------------------------------------------------
+//using bfs 
+class Solution {
+  public:
+    vector<vector<int>> getComponents(int V, vector<vector<int>>& edges) {
+        // code here
+        
+        vector<vector<int>>adj(V);
+        for(auto it:edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        
+        queue<int>q;
+        vector<int>visited(V,0);
+        vector<vector<int>>res;
+        for(int i=0;i<V;i++){
+            vector<int>temp;
+            if(!visited[i]){
+                q.push(i);
+                visited[i]=1;
+            while(!q.empty()){
+                int val=q.front();
+                q.pop();
+                temp.push_back(val);
+                for(auto it:adj[val]){
+                    if(!visited[it]){
+                        visited[it]=1;
+                        q.push(it);
+                    }
+                }
+            }
+            res.push_back(temp);
+            }
+        }
+        return res;
+    }
+};
