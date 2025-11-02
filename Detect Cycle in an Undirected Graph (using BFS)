@@ -1,0 +1,54 @@
+Given an undirected graph with V vertices and E edges, represented as a 2D vector edges[][], where each entry edges[i] = [u, v] 
+denotes an edge between vertices u and v, determine whether the graph contains a cycle or not.
+Note: The graph can have multiple component.
+
+Example 1:
+Input: V = 4, E = 4, edges[][] = [[0, 1], [0, 2], [1, 2], [2, 3]]
+Output: true
+Explanation: 
+1 -> 2 -> 0 -> 1 is a cycle.
+
+Example 2:
+Input: V = 4, E = 3, edges[][] = [[0, 1], [1, 2], [2, 3]]
+Output: false
+Explanation: 
+No cycle in the graph.
+------------------------------------------------------------------------------------------------------------------------------------
+//bfs tc=O(V+ 2*E)  sc=O(V)
+class Solution {
+  public:
+    bool isCycle(int V, vector<vector<int>>& edges) {
+        // Code here
+        vector<int>visited(V,0);
+        queue<pair<int,int>>q;
+        vector<vector<int>>adjList(V);
+        for(auto it: edges){
+            adjList[it[0]].push_back(it[1]);
+            adjList[it[1]].push_back(it[0]);
+            
+        }
+        for(int i=0;i<V;i++){
+            if(!visited[i]){
+                q.push({i,-1});
+                visited[i]=1;
+            }
+            while(!q.empty()){
+                int val=q.front().first;
+                int parent=q.front().second;
+                q.pop();
+                
+                for(auto it:adjList[val]){
+                    if(!visited[it]){
+                        q.push({it,val});
+                        visited[it]=1;
+                    }
+                    else if(it!=parent){
+                        return true;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+};
