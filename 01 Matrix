@@ -59,6 +59,7 @@ public:
             }
         }
 --------------------------------------------------------------------------------------------------------
+//dfs  tc=O(n*m) sc=O(n*m)
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
