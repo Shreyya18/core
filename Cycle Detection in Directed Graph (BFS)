@@ -1,0 +1,56 @@
+Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.
+The graph is represented as a 2D vector edges[][], where each entry edges[i] = [u, v] denotes an edge from verticex u to v.
+
+Example 1:
+Input: V = 4, edges[][] = [[0, 1], [1, 2], [2, 0], [2, 3]]
+Output: true
+Explanation: The diagram clearly shows a cycle 0 → 1 → 2 → 0
+
+Example 2:
+Input: V = 4, edges[][] = [[0, 1], [0, 2], [1, 2], [2, 3]]
+Output: false
+Explanation: no cycle in the graph
+-------------------------------------------------------------------------------------------------------------------------------------
+//tc=O(V+E) sc=O(V+E)
+class Solution {
+  public:
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        // code here
+        vector<int>inDegree(V,0);
+        queue<int>q;
+        vector<vector<int>>adjList(V);
+        int count=0;
+        for(auto it:edges){
+            adjList[it[0]].push_back(it[1]);
+        }
+        for(int i=0;i<V;i++){
+            for(auto it:adjList[i]){
+                inDegree[it]++;
+            }
+        }
+        
+        for(int i=0;i<V;i++){
+            if(inDegree[i]==0)
+                q.push(i);
+        }
+        
+        while(!q.empty()){
+            int val=q.front();
+            count++;
+            q.pop();
+            for(auto it:adjList[val]){
+                inDegree[it]--;
+                if(inDegree[it]==0)
+                    q.push(it);
+            }
+        }
+        /*instead of using one more loop to traverse indegree array to check if all nodes are visited, 
+        use counter each time you pop the element from queue */
+        // for(int i=0;i<V;i++){
+        //     if(inDegree[i]!=0)
+        //         return true;
+        // }
+        // return false;
+        return count!=V;
+    }
+};
