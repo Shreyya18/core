@@ -48,4 +48,36 @@ class Solution {
         return dist;
     }
 };
+----------------------------------------------------------------------------------------------------------------------------
+//without using visited array. use dist array itself . if dist[i]==-1 that means yet to find the distance.
+class Solution {
+  public:
+    vector<int> shortestPath(int V, vector<vector<int>> &edges, int src) {
+        // code here
+        vector<vector<int>>adjList(V);
+        queue<pair<int,int>>q;
+        vector<int>dist(V,-1);
 
+        for(auto it:edges){
+            adjList[it[0]].push_back(it[1]);
+            adjList[it[1]].push_back(it[0]);
+        }
+        
+        q.push({src,0});
+        dist[src]=0;
+
+        while(!q.empty()){
+            int val=q.front().first;
+            int distance=q.front().second;
+            q.pop();
+            
+            for(auto it:adjList[val]){
+                if(dist[it]==-1){
+                    q.push({it, distance+1});
+                    dist[it]=distance+1;
+                }
+            }
+        }
+        return dist;
+    }
+};
