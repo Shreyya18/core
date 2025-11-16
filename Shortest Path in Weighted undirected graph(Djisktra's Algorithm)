@@ -1,0 +1,84 @@
+You are given a weighted undirected graph with n vertices numbered from 1 to n and m edges along with their weights. 
+Find the shortest path between vertex 1 and vertex n. Each edge is given as {a, b, w}, denoting an edge between vertices a and b with weight w.
+If a path exists, return a list of integers where the first element is the total weight of the shortest path, 
+and the remaining elements are the nodes along that path (from 1 to n). If no path exists, return a list containing only {-1}.
+
+Note: The driver code will internally verify your returned list.
+
+If both the path and its total weight are valid, only the total weight will be displayed as output.
+If your list contains only -1, the output will be -1.
+If the returned list is invalid, the output will be -2.
+
+Example 1:
+Input: n = 5, m= 6, edges = [[1, 2, 2], [2, 5, 5], [2, 3, 4], [1, 4, 1], [4, 3, 3], [3, 5, 1]]
+Output: 5
+Explanation: Shortest path from 1 to n is by the path 1 4 3 5 whose weight is 5. 
+
+Example 2:
+Input: n = 2, m= 1, edges = [[1, 2, 2]]
+Output: 2
+Explanation: Shortest path from 1 to 2 is by the path 1 2 whose weight is 2. 
+
+Example 3:
+Input: n = 2, m= 0, edges = [ ]
+Output: -1
+Explanation: Since there are no edges, so no answer is possible.
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+//dijktras algorithm to find shortest distance from source to destination and also display the shortest path from source to destination
+class Solution {
+//tc=O(n log m) sc=O(n+m)
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        // Code here
+        vector<vector<pair<int,int>>>adjList(n+1);
+        
+        for(auto it:edges){
+            int u=it[0];
+            int v=it[1];
+            int w=it[2];
+            adjList[u].push_back({v,w});
+            adjList[v].push_back({u,w});
+        }
+        
+        vector<int>parent(n+1);
+        vector<int>dist(n+1,1e9);
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>>pq;
+        for(int i=1;i<=n;i++){
+            parent[i]=i;
+        }
+        
+        pq.push({0,1});
+        dist[1]=0;
+        
+        
+        while(!pq.empty()){
+            int val=pq.top().second;
+            int weight=pq.top().first;
+            pq.pop();
+            
+            for(auto it:adjList[val]){
+                int node=it.first;
+                int w=it.second;
+                
+                if(weight+w<dist[node]){
+                    dist[node]=weight+w;
+                    pq.push({dist[node],node});
+                    parent[node]=val;
+                }
+            }
+        }
+        if(dist[n]==1e9) return {-1};
+        vector<int>res;
+        int node=n;
+        while(parent[node]!=node){
+            res.push_back(node);
+            node=parent[node];
+        }
+        res.push_back(1);
+        res.push_back(dist[n]);
+        
+         reverse(res.begin(),res.end());
+         return res;
+        
+    }
+};
