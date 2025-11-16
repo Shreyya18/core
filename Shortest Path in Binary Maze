@@ -55,3 +55,44 @@ public:
         return -1;
     }
 };
+-----------------------------------------------------------------------------------------------------------------------------------
+//using dijktras but use queue. since weight same here no need of  priority queue, because queue itself will store in ascending order
+tc=O(n*m) sc=O(n*m)
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        queue<pair<int, pair<int,int>>>q;
+        vector<vector<int>>distance(n, vector<int>(m,1e9));
+        if(grid[0][0]==0){
+            q.push({1,{0,0}});
+            distance[0][0]=1;
+        }
+        else 
+            return -1;
+        
+        int delRow[]={-1,-1,0,1,1,1,0,-1};
+        int delCol[]={0,1,1,1,0,-1,-1,-1};
+        while(!q.empty()){
+                int dist=q.front().first;
+                int row=q.front().second.first;
+                int col=q.front().second.second;
+                q.pop();
+                if(row==n-1 && col==m-1)
+                    return dist;
+
+                for(int i=0;i<8;i++){
+                    int nRow=row+delRow[i];
+                    int nCol=col+delCol[i];
+                    if(nRow>=0 && nRow<n && nCol>=0 && nCol<m){
+                        if( grid[nRow][nCol]==0 &&  dist+1<distance[nRow][nCol]){
+                            distance[nRow][nCol]=dist+1;
+                            q.push({dist+1,{nRow,nCol}});
+                        }
+                    }
+                }
+        }
+        return -1;
+    }
+};
