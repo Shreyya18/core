@@ -1,0 +1,59 @@
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates 
+where the candidate numbers sum to target.
+Each number in candidates may only be used once in the combination.
+Note: The solution set must not contain duplicate combinations.
+
+Example 1:
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+
+Example 2:
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+//tc=O(2^t* k) 2^t subsequences, k average length of each combination. sc=O(k * x), To store all x valid combinations, each of average length k.
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+                vector<int>res;
+        vector<vector<int>>ans;
+        int sum=0;
+        sort(candidates.begin(), candidates.end());
+        findSequence(0,target, candidates,res,ans);
+        return ans;
+    }
+
+    void findSequence(int i, int& target, vector<int>& candidates, vector<int>& res, vector<vector<int>>& ans){
+        // if(i==candidates.size())
+        //     return;
+        if(target==0){
+            ans.push_back(res);
+            return;
+        }
+        // if(target<0)
+        //     return ;
+
+        for(int k=i;k<candidates.size();k++){
+            if(k>i && candidates[k]==candidates[k-1]) continue;
+        
+            if(candidates[k]>target)    
+                break;
+        res.push_back(candidates[k]);
+        int newTarget=target-candidates[k];
+        findSequence(k+1, newTarget, candidates,res, ans);
+
+        res.pop_back();
+        // findSequence(i+1, target, candidates, res, ans);
+        }
+    }
+};
