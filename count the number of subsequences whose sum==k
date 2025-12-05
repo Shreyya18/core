@@ -1,0 +1,43 @@
+//to count the number of subsequences whose sum==k
+#include <stdio.h>
+#include<bits/stdc++.h>
+using namespace std;
+class Solution {
+  public:
+    int checkSubsequenceSum(int n, vector<int>& arr, int k) {
+        // Code here
+        vector<int>res;
+        int sum=0;
+        int val= isSubsequence(0, arr, k, res,sum);
+        return val;
+        
+    }
+    
+    int isSubsequence(int i, vector<int>& arr, int k, vector<int>& res, int& sum){
+        if(i==arr.size()){
+            if(sum==k){
+                return 1;
+            }else
+                return 0;
+        }
+
+        res.push_back(arr[i]);
+        sum=sum+arr[i];
+        int l= isSubsequence(i+1, arr, k, res,sum);
+        
+        sum=sum-(res.back());
+        res.pop_back();
+        int r=isSubsequence(i+1, arr,k,res, sum);
+        
+        return l+r;
+    }
+};
+int main()
+{
+    Solution s;
+    vector<int>arr={1,2,1};
+    int n=3;
+    int k=2;
+    cout<<s.checkSubsequenceSum(n,arr,k);
+    return 0;
+}
