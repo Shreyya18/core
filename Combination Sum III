@@ -1,0 +1,41 @@
+Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+Example 1:
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+
+Example 2:
+Input: nums = [0]
+Output: [[],[0]]
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+//tc=O(2^9*k) sc=O(k)
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>>ans;
+        vector<int>ds;
+        int sum=0;
+        findSum(1,k,n,ds, ans,sum);
+        return ans;
+    }
+
+    void findSum(int idx, int k, int n, vector<int>& ds, vector<vector<int>>& ans, int& sum){
+        if(sum==n && ds.size()==k){
+            ans.push_back(ds);
+        }
+        
+        for(int i=idx; i<=9;i++){
+            if(i>(n-sum))
+                break;
+            // if(i!=idx && )
+            sum=sum+i;
+            ds.push_back(i);
+            findSum(i+1, k, n, ds, ans, sum);
+            sum=sum-i;
+            ds.pop_back();
+
+        }
+    }
+};
+ 
