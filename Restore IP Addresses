@@ -1,0 +1,56 @@
+A valid IP address consists of exactly four integers separated by single dots. Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
+For example, "0.1.2.201" and "192.168.1.1" are valid IP addresses, but "0.011.255.245", "192.168.1.312" and "192.168@1.1" are invalid IP addresses.
+Given a string s containing only digits, return all possible valid IP addresses that can be formed by inserting dots into s. You are not allowed to
+reorder or remove any digits in s. You may return the valid IP addresses in any order.
+
+Example 1:
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+
+Example 2:
+Input: s = "0000"
+Output: ["0.0.0.0"]
+
+Example 3:
+Input: s = "101023"
+Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+// tc=O(3^4) where 3= branch that is each segment can have atmost 3 value, 4=no of segment. sc=O(n)
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string>ans;
+        string res="";
+        solve(0,0, s, res,ans);
+        return ans;
+    }
+
+    void solve(int idx,int segment, string s, string& res, vector<string>& ans){
+        if(idx==s.size() &&  segment==4 ){
+            ans.push_back(res.substr(0, res.size()-1));
+            return;
+        }
+        if(segment>4)
+            return;
+        for(int i=idx;i<s.size();i++){
+            string subStr=s.substr(idx, i-idx+1);
+            if(isValid(subStr)){
+                res+=(subStr);
+                res+=".";
+                solve(i+1,segment+1, s,res,ans);
+                res.erase(res.size()-subStr.size()-1);
+            }
+        }
+    }
+
+    bool isValid(string subStr){
+        if(subStr.size()==0 || subStr.size()>3)
+            return false;
+        if(subStr.size()>1 && subStr[0]=='0')
+            return false;
+        int val=stoi(subStr);
+        if(val>=0 && val<=255)
+            return true;
+        return false;
+    }
+};
