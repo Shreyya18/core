@@ -1,0 +1,40 @@
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+Example 1:
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+Example 2:
+Input: nums = [0,1]
+Output: [[0,1],[1,0]]
+
+Example 3:
+Input: nums = [1]
+Output: [[1]]
+-----------------------------------------------------------------------------------------------------------------------------------------
+// tc=O(n!) sc=O(n!)
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int>res;
+        vector<vector<int>>ans;
+        int n=nums.size();
+        solve(0, n,nums, res, ans);
+        return ans;
+    }
+
+    void solve(int idx, int n, vector<int>& nums, vector<int>& res, vector<vector<int>>& ans){
+        if(res.size()==n){
+            ans.push_back(res);
+            return;
+        }
+
+        for(int i=idx;i<n;i++){
+            res.push_back(nums[i]);
+            swap(nums[idx], nums[i]);
+            solve(idx+1, n, nums, res, ans);
+            swap(nums[idx], nums[i]);
+            res.pop_back();
+        }
+    }
+};
