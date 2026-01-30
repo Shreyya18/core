@@ -1,0 +1,96 @@
+Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path 
+such that adding up all the values along the path equals targetSum.
+A leaf is a node with no children.
+
+Example 1:
+Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+Output: true
+Explanation: The root-to-leaf path with the target sum is shown.
+
+Example 2:
+Input: root = [1,2,3], targetSum = 5
+Output: false
+Explanation: There are two root-to-leaf paths in the tree:
+(1 --> 2): The sum is 3.
+(1 --> 3): The sum is 4.
+There is no root-to-leaf path with sum = 5.
+
+Example 3:
+Input: root = [], targetSum = 0
+Output: false
+Explanation: Since the tree is empty, there are no root-to-leaf paths.
+----------------------------------------------------------------------------------------------------------------------------------
+// using non void function(we use bool). tc=O(n) sc=O(height)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        int sum=0;
+        if(solve(root, targetSum, sum))
+            return true;
+        return false;
+    }
+
+
+    bool solve(TreeNode* root, int targetSum, int& sum){
+        if(root==NULL)
+            return false;
+        sum+=root->val;
+        if(root->left==NULL && root->right==NULL && sum==targetSum){
+            return true;
+        }
+        bool left= solve(root->left, targetSum, sum);
+        bool right= solve(root->right, targetSum, sum);
+        sum-=root->val;
+        return (left|| right);
+    }
+};
+-----------------------------------------------------------------------------------------------------------------------------------
+// using void function  tc=O(n) sc=(h)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        int sum=0;
+        bool isExist=false;
+        solve(root, targetSum, sum, isExist);
+            return isExist;
+    }
+
+    void solve(TreeNode* root, int targetSum, int& sum, bool& isExist){
+        if(isExist)
+            return;
+        if(root==NULL){
+            //isExist=false;
+            return;
+        }
+        sum+=root->val;
+        if(root->left==NULL && root->right==NULL && sum==targetSum){
+            isExist=true;
+            return;
+        }
+        solve(root->left, targetSum, sum, isExist);
+        solve(root->right, targetSum, sum, isExist);
+        sum-=root->val;
+    }
+};
