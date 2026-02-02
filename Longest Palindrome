@@ -1,0 +1,69 @@
+Given a string s which consists of lowercase or uppercase letters, return the length of the longest palindrome that can be built with those letters.
+Letters are case sensitive, for example, "Aa" is not considered a palindrome.
+
+Example 1:
+Input: s = "abccccdd"
+Output: 7
+Explanation: One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+Example 2:
+Input: s = "a"
+Output: 1
+Explanation: The longest palindrome that can be built is "a", whose length is 1.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+// tc=O(n log k)+O(k) k=no of unique element, O(n log k) for insertaion/find and next O(k) for traversal in the next for loop.  sc=O(k)
+class Solution {
+public:
+    int longestPalindrome(string s) {
+         int n=s.size();
+        map<char,int>count;
+        for(int i=0;i<n;i++){
+            count[s[i]]++;
+        }
+        bool odd=false;
+        int ans=0;
+        for(auto it:count){
+            if(it.second>0 && it.second%2==0)
+                ans+=it.second;
+            else if(it.second>0 && it.second%2!=0){
+                if(odd==false){
+                    ans+=it.second;
+                    odd=true;
+                }
+                else{
+                    ans+=it.second-1;
+                }
+            }
+        }
+        return ans;
+    }
+};
+------------------------------------------------------------------------------------------------------------------
+// tc=O(n log K)+O(k) => O(n log k)=> O(n) sc=O(k) => O(1)
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        
+        int n=s.size();
+        map<int,int>count;
+        for(int i=0;i<n;i++){
+            count[s[i]]++;
+        }
+        bool odd=false;
+        int ans=0;
+        for(auto it:count){
+            if(it.second%2==0)
+                ans+=it.second;
+            else{
+                ans+=it.second-1;
+                odd=true;
+                }
+        }
+
+        if(odd==true){
+            return ans+1;
+        }
+        return ans;
+    }
+};
+ 
