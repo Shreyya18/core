@@ -20,7 +20,7 @@ Output: false
 Explanation:
 There is no way to pick p and q to form the required three segments.
 -------------------------------------------------------------------------------------------------------------------------------------
-//
+// version 1 : tc=O(n) sc=O(1)  (note: version 2 is safe to use)
 class Solution {
 public:
     bool isTrionic(vector<int>& nums) {
@@ -64,7 +64,7 @@ public:
     }
 };
 -------------------------------------------------------------------------------------------------
-//
+// version 2: tc=O(n) sc=O(1)
 class Solution {
 public:
     bool isTrionic(vector<int>& nums) {
