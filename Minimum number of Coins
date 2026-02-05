@@ -1,0 +1,68 @@
+Given an infinite supply of each denomination of Indian currency { 1, 2, 5, 10 } and a target value n. Find the minimum number of 
+coins and/or notes needed to make the change for Rs n. 
+
+Example 1:
+Input: n = 39
+Output: 6
+Explaination: 39 can be formed using 3 coins of 10 rupees, 1 coin of 5 rupees and 2 coins of 2 rupees so minimum coins required are 6.
+
+Example 2:
+Input: n = 121
+Output: 13
+Explaination: 121 can be formed using 12 coins of 10 rupees and 1 coin of 1 rupees.
+-----------------------------------------------------------------------------------------------------------------------------------------------
+// tc=O(n) outer for loop runs 4 times so O(1), inner while loop at worst case runs O(n) times,  sc=O(1) 
+class Solution {
+  public:
+    int findMin(int n) {
+        
+        int count = 0;
+        vector<int> denomination = {1, 2, 5, 10};
+        // Traverse through all denomination
+        for (int i = denomination.size() - 1; i >= 0; i--) {
+
+            // Find denominations
+            while (n >= denomination[i]) {
+                n -= denomination[i];
+                count++;
+            }
+        }
+        return count;
+    }
+};
+----------------------------------------------------------------------------------------------------------------------------
+// tc=O(1) for loop runs 4 times i.e constatnt O(1),  sc=O(1)
+class Solution {
+  public:
+    int findMin(int n) {
+             int count = 0;
+    int denomination[] = {10, 5, 2, 1};
+
+    for (int i = 0; i < 4; i++) {
+        count += n / denomination[i];
+        n %= denomination[i];
+    }
+    return count;
+  }
+};
+----------------------------------------------------------------------------------------------
+// tc=O(1) sc=O(1)
+class Solution {
+  public:
+    int findMin(int n) {
+         int coins=0;
+        
+        coins+=(n/10);
+        n=n%10;
+        
+        coins+=(n/5);
+        n=n%5;
+        
+        coins+=n/2;
+        n=n%2;
+        
+        coins+=n/1;
+            
+        return coins;
+    }
+};
