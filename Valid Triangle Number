@@ -1,0 +1,59 @@
+Given an integer array nums, return the number of triplets chosen from the array that can make triangles if we take them as side lengths of a triangle.
+
+Example 1:
+Input: nums = [2,2,3,4]
+Output: 3
+Explanation: Valid combinations are: 
+2,3,4 (using the first 2)
+2,3,4 (using the second 2)
+2,2,3
+
+Example 2:
+Input: nums = [4,2,3,4]
+Output: 4
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+//tc=O(n^3) sc=O(1)
+class Solution {
+public:
+    int triangleNumber(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int n=nums.size();
+        int k=n-1;
+        int count=0;
+        while(k>=2){
+            for(int i=0;i<k-1;i++){
+                for(int j=i+1;j<k;j++){
+                    if(nums[i]+nums[j]>nums[k])
+                        count++;
+                }
+            }
+            k--;
+        }
+        return count; 
+    }
+};
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+// tc=(n^2) sc=O(1)
+class Solution {
+public:
+    int triangleNumber(vector<int>& nums) {
+          sort(nums.begin(), nums.end());
+        int n=nums.size();
+        int k=n-1;
+        int count=0;
+        while(k>=2){
+        int left=0, right=k-1;
+            while(left<right){
+                if(nums[left]+nums[right]>nums[k]){
+                    count+=(right-left);
+                    right--;
+                }
+                else{
+                    left++;
+                }
+            }
+            k--;
+        }
+        return count;
+    }
+};
