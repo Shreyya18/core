@@ -18,7 +18,7 @@ Output: 30
 Explanation:
 The input binary string 1111111111111111111111111111101 has a total of thirty set bits.
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-//  tc=O(n) sc=O(1)
+//  tc=O(log n) sc=O(1)
 class Solution {
 public:
     int hammingWeight(int n) {
